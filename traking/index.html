@@ -8,19 +8,27 @@
 <body>
   <video id="abigobaldo" width="400" height="300" preload autoplay loop muted></video>
   <script>
-  var colors = new tracking.ColorTracker(['magenta', 'cyan', 'yellow']);
 
-  colors.on('track', function(event) {
-    if (event.data.length === 0) {
-      // No colors were detected in this frame.
-    } else {
-      event.data.forEach(function(rect) {
-        console.log(rect.color);
+      window.onload = function() {
+      var video = document.getElementById('abigobaldo');
+
+      var tracker = new tracking.ColorTracker(['magenta', 'cyan', 'yellow']);
+      
+      tracking.track('#abigobaldo', tracker, { camera: true });
+
+      tracker.on('track', function(event) {
+
+        event.data.forEach(function(rect) {
+          if (rect.color === 'custom') {
+            rect.color = tracker.customColor;
+          }
+
+          console.log(rect.color);
+        });
       });
-    }
-  });
 
-  tracking.track('#abigobaldo', colors);
+    };
+
   </script>
 </body>
 </html>
